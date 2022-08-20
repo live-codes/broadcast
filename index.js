@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const socketio = require("socket.io");
 const { nanoid } = require("nanoid");
 
+const port = process.env.PORT || 3000;
 const app = express();
 const httpserver = http.createServer(app);
 const io = new socketio.Server(httpserver);
@@ -67,4 +68,4 @@ io.on("connection", (socket) => {
   });
 });
 
-httpserver.listen(3000);
+httpserver.listen(port);
