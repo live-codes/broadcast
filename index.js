@@ -41,7 +41,7 @@ app.post("/", (req, res) => {
     result,
     lastAccessed: Date.now(),
   };
-  const url = `${req.protocol}://${req.get("host")}/channels/${channel}`;
+  const url = `https://${req.get("host")}/channels/${channel}`;
   res.json({ channel, url });
 });
 
