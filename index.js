@@ -40,14 +40,8 @@ app.post("/", (req, res) => {
     result,
     lastAccessed: Date.now(),
   };
-  res.end(
-    req.protocol +
-      "://" +
-      req.get("host") +
-      req.originalUrl +
-      "channels/" +
-      channel
-  );
+  const url = `${req.protocol}://${req.get("host")}/channels/${channel}`;
+  res.json({ channel, url });
 });
 
 app.get("/channels/:id", (req, res) => {
