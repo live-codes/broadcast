@@ -1,0 +1,7 @@
+{
+  "name": "LiveCodes Broadcast",
+  "description": "A broadcast server for real-time updates of LiveCodes result page",
+  "repository": "https://github.com/live-codes/broadcast",
+  "logo": "https://livecodes.io/livecodes/assets/images/livecodes-logo.svg",
+  "keywords": ["LiveCodes", "broadcast", "real-time", "express", "socket.io"]
+}
