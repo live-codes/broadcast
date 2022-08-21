@@ -28,12 +28,22 @@ app.use((req, res, next) => {
 });
 
 const generateId = () => nanoid(10);
+const hasPermission = (req) => {
+  if (process.env.useTokens !== "true") return true;
+  const token = req.body.token || req.query.token;
+  if (!token) return false;
+  return Object.values(process.env).find((value) => value === token) != null;
+};
 
 app.get("/", (req, res) => {
   res.end("LiveCodes Broadcast");
 });
 
 app.post("/", (req, res) => {
+  if (!hasPermission(req)) {
+    res.status(401).json({ error: "Permission denied! Please supply token." });
+    return;
+  }
   const result = req.body.result;
   const channel = req.body.channel || generateId();
   io.in(channel).emit("recieve", result);
