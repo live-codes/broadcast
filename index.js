@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const socketio = require("socket.io");
 const { nanoid } = require("nanoid");
 
+const useTokens = process.env.useTokens === "true";
 const port = process.env.PORT || 3000;
 const app = express();
 const httpserver = http.createServer(app);
@@ -29,7 +30,7 @@ app.use((req, res, next) => {
 
 const generateId = () => nanoid(10);
 const hasPermission = (req) => {
-  if (process.env.useTokens !== "true") return true;
+  if (!useTokens) return true;
   const token = req.body.token || req.query.token;
   if (!token) return false;
   return Object.values(process.env).find((value) => value === token) != null;
@@ -48,7 +49,7 @@ app.post("/", (req, res) => {
   const channel = req.body.channel || generateId();
   io.in(channel).emit("recieve", result);
   results[channel] = {
-    result,
+    result: result.length < 300000 ? result : "",
     lastAccessed: Date.now(),
   };
   const url = `https://${req.get("host")}/channels/${channel}`;
