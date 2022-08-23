@@ -32,9 +32,12 @@ app.use((req, res, next) => {
 const generateId = () => nanoid(10);
 const hasPermission = (req) => {
   if (!userTokens) return true;
-  const token = req.body.token || req.query.token;
-  if (!token) return false;
-  return Object.values(process.env).find((value) => value === token) != null;
+  const userToken =
+    req.body.userToken || req.query.userToken || req.query.token;
+  if (!userToken) return false;
+  return (
+    Object.values(process.env).find((value) => value === userToken) != null
+  );
 };
 
 app.get("/", (req, res) => {
