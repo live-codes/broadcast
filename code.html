@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LiveCodes Broadcast</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        font: 0.9em sans-serif;
+        justify-content: center;
+        overflow: hidden;
+      }
+      h1 {
+        text-align: center;
+        font-size: 1.5em;
+        color: rgb(72, 72, 72);
+      }
+      #container {
+        border: 1px solid black;
+        border-radius: 5px;
+        height: 80vh;
+        min-height: 250px;
+        width: 80%;
+        margin: auto;
+      }
+
+      #container iframe {
+        border: 0;
+        border-radius: 5px;
+        height: 100%;
+        width: 100%;
+      }
+      #footer {
+        margin: 1em;
+        text-align: center;
+      }
+      #footer a {
+        color: rgb(72, 72, 72);
+        font-size: 0.9em;
+        margin: 1em;
+        text-decoration: none;
+      }
+      #footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.5.1/dist/socket.io.min.js"></script>
+  </head>
+  <body>
+    <h1>LiveCodes Broadcast</h1>
+    <div id="container"></div>
+    <div id="footer">
+      <a target="_blank" href="https://livecodes.io">LiveCodes</a>
+      <a target="_blank" href="https://livecodes.io/web/docs/features/broadcast"
+        >Broadcast docs</a
+      >
+    </div>
+    <script type="module">
+      import { createPlayground } from "https://dev.livecodes.io/lib/livecodes.esm.js";
+      const options = {
+        appUrl: "https://dev.livecodes.io/",
+        config: {
+          markup: {
+            language: "html",
+            content: "Loading...",
+          },
+          readonly: true,
+        },
+      };
+      createPlayground("#container", options).then(async (playground) => {
+        const loadConfig = async (_result, config) => {
+          console.log({ _result, config });
+          await playground.setConfig({
+            ...config,
+            readonly: true,
+          });
+          if (config.activeEditor) {
+            const { lineNumber = 1, column = 1 } =
+              config[config.activeEditor]?.position;
+            await playground.show(config.activeEditor, {
+              line: lineNumber,
+              column,
+            });
+          }
+        };
+        const socket = io();
+        socket.on("receive", loadConfig);
+        const channel = location.pathname.split("/").slice(-1)[0];
+        socket.emit("join", channel);
+      });
+    </script>
+  </body>
+</html>
