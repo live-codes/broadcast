@@ -4,4 +4,5 @@ services:
     env: node
     repo: https://github.com/live-codes/broadcast
     branch: main
+    buildCommand: npm ci
     startCommand: npm start
