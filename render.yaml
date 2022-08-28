@@ -4,5 +4,4 @@ services:
     env: node
     repo: https://github.com/live-codes/broadcast
     branch: main
-    healthCheckPath: /
     startCommand: npm start
