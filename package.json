@@ -4,7 +4,8 @@
   "description": "LiveCodes broadcast server",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start index.js",
+    "start": "node ./index.js",
+    "serve": "pm2 start index.js",
     "dev": "pm2-dev start index.js"
   },
   "keywords": [],
