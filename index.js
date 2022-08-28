@@ -53,6 +53,7 @@ app.post("/", (req, res) => {
   const channel = newChannel ? generateId() : req.body.channel;
   const result = req.body.result;
   const data = req.body.data;
+  const stopBroadcast = req.body.stop;
 
   if (!newChannel && !channels[channel]) {
     res.status(404).json({ error: "Channel not found!" });
@@ -62,6 +63,12 @@ app.post("/", (req, res) => {
     res
       .status(401)
       .json({ error: "Permission denied! Invalid channel token." });
+    return;
+  }
+  if (!newChannel && channels[channel] && stopBroadcast) {
+    delete channels[channel];
+    io.in(channel).disconnectSockets(true);
+    res.json({ message: "Broadcast stopped!" });
     return;
   }
 

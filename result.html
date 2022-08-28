@@ -37,7 +37,13 @@
         iframe.srcdoc = result;
       };
       const socket = io();
-      socket.on("receive", showResult);
+      socket.on("receive", (result) => {
+        iframe.srcdoc = result;
+      });
+      socket.on("disconnect", () => {
+        iframe.srcdoc =
+          '<div style="text-align: center; padding: 2em;">Broadcast Diconnected!</div>';
+      });
       const channel = location.pathname.split("/").slice(-1)[0];
       socket.emit("join", channel);
     </script>
