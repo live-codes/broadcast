@@ -10,7 +10,7 @@
 
 ## Overview
 
-An example implementation for [LiveCodes](https://github.com/live-codes/livecodes) broadcast server. It broadcasts the result page &/or playground code to other browsers/devices in real-time.
+An example implementation for [LiveCodes](https://github.com/live-codes/livecodes) broadcast server. It broadcasts the result page, and optionally playground code, to other browsers/devices in real-time.
 
 ## License
 
